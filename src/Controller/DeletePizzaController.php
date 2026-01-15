@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredient;
 use App\Entity\Pizza;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,11 @@ final class DeletePizzaController extends AbstractController
     public function delete(Pizza $pizza, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid("SUP". $pizza->getId(),$request->get('_token'))){
+            foreach ($pizza->getIngredient() as $ingredient) {
+                $pizza->removeIngredient($ingredient);
+            }
+            $entityManager->persist($pizza);
+            $entityManager->flush();
             $entityManager->remove($pizza);
             $entityManager->flush();
             $this->addFlash('success','Article supprimé avec succès !');

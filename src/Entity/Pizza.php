@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PizzaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PizzaRepository::class)]
@@ -16,8 +18,20 @@ class Pizza
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Ingredient = null;
+    /**
+     * @var Collection<int, Ingredient>
+     */
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'pizzas')]
+    private Collection $Ingredient;
+
+    #[ORM\ManyToOne(inversedBy: 'pizzas')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Type $Type = null;
+
+    public function __construct()
+    {
+        $this->Ingredient = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -36,14 +50,38 @@ class Pizza
         return $this;
     }
 
-    public function getIngredient(): ?string
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredient(): Collection
     {
         return $this->Ingredient;
     }
 
-    public function setIngredient(string $Ingredient): static
+    public function addIngredient(Ingredient $ingredient): static
     {
-        $this->Ingredient = $Ingredient;
+        if (!$this->Ingredient->contains($ingredient)) {
+            $this->Ingredient->add($ingredient);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        $this->Ingredient->removeElement($ingredient);
+
+        return $this;
+    }
+
+    public function getType(): ?Type
+    {
+        return $this->Type;
+    }
+
+    public function setType(?Type $Type): static
+    {
+        $this->Type = $Type;
 
         return $this;
     }

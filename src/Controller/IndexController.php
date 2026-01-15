@@ -11,16 +11,13 @@ use Symfony\Component\Routing\Attribute\Route;
 final class IndexController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    
-
     public function index(PizzaRepository $repo): Response
     {
-        $pizza = $repo->findAll();
+        $pizza = $repo->findAllWithRelations();
         
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
             'pizza'=> $pizza,
-            
         ]);
     }
     
