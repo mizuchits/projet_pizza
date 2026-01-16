@@ -13,6 +13,7 @@ final class IndexController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(PizzaRepository $repo): Response
     {
+        
         $pizza = $repo->findAll();
         
         return $this->render('index/index.html.twig', [

@@ -24,6 +24,7 @@ final class AddPizzaController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
         
+            $pizza->setUser($this->getUser());
             $entityManager->persist($pizza);
             $entityManager->flush();
             $this->addFlash('success','Article ajouté avec succès !');

@@ -28,6 +28,9 @@ class Pizza
     #[ORM\JoinColumn(nullable: false)]
     private ?Type $Type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pizzas')]
+    private ?User $User = null;
+
     public function __construct()
     {
         $this->Ingredient = new ArrayCollection();
@@ -82,6 +85,18 @@ class Pizza
     public function setType(?Type $Type): static
     {
         $this->Type = $Type;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->User;
+    }
+
+    public function setUser(?User $User): static
+    {
+        $this->User = $User;
 
         return $this;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Ingredient;
 use App\Entity\Pizza;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
