@@ -23,7 +23,7 @@ final class EditPizzaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($pizza);
             $entityManager->flush();
-            $this->addFlash('success','Article Supprimé avec succès !');
+            $this->addFlash('success','Article Modifié avec succès !');
             return $this->redirectToRoute('app_index');
         
         }
